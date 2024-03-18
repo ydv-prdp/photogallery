@@ -3,14 +3,14 @@
 import Heart from "@/components/heart"
 import { CldImage } from "next-cloudinary"
 import { setAsFavoriteAction } from "./actions"
-import { startTransition, useTransition } from "react"
+import { startTransition, useState, useTransition } from "react"
 import { SearchResult } from "./page"
 import Fullheart from "@/components/fullheart"
 
-const CloudinaryImage = (props:any & {imageData:SearchResult; path:string}) => {
+const CloudinaryImage = (props:any & {imageData:SearchResult}) => {
   const [transition, startTransition] = useTransition();
   const {imageData} = props;
-  const isFavorited  = imageData.tags.includes('favorite');
+  const [isFavorited, setIsFavorited] = useState(imageData.tags.includes('favorite'))
 
   return (
    <div className="relative">
@@ -22,14 +22,16 @@ const CloudinaryImage = (props:any & {imageData:SearchResult; path:string}) => {
       
         isFavorited ? 
         (<Fullheart onClick={()=>{
+          setIsFavorited(false)
           startTransition(()=>{
-            setAsFavoriteAction(imageData.public_id, false, props.path);
+            setAsFavoriteAction(imageData.public_id, false);
           })
         }} className="absolute top-2 right-2 hover:text-white  text-red-500 cursor-pointer"/>)
             : 
             (<Heart onClick={()=>{
+              setIsFavorited(true)
               startTransition(()=>{
-                setAsFavoriteAction(imageData.public_id, true,props.path);
+                setAsFavoriteAction(imageData.public_id, true);
               })
             }} className="absolute top-2 right-2 hover:text-red-500 cursor-pointer"/>)
       }
