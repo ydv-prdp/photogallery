@@ -3,6 +3,7 @@ import cloudinary from 'cloudinary'
 import CloudinaryImage from "../gallery/cloudinary-image"
 import { SearchResult } from '../gallery/page';
 import ForceRefresh from '@/components/force-refresh';
+import FavoritesList from './favorties-list';
 
   
 const Favorites = async() => {
@@ -24,17 +25,9 @@ const Favorites = async() => {
                 </h1>
             </div>
           
-            <div className="grid grid-cols-4 gap-4">
-                {results.resources.map((result)=>(
-                    <CloudinaryImage
-                        key={result.public_id}
-                        imageData={result}
-                        width={"400"}
-                        height={"300"}
-                        alt="Description of my image"
-                  />
-                ))}
-            </div>
+           <FavoritesList
+                initialResources={results.resources}
+           />
         </div>
     </section>
   )
